@@ -49,6 +49,10 @@ module Papertrail
 
       connection = Papertrail::Connection.new(options)
 
+      if (group = connection.show_group(options[:group]))
+        exit 0 if group['systems'].detect { |system| system['name'] == options[:system] }
+      end
+
       if connection.join_group(options[:system], options[:group])
         exit 0
       end
